@@ -1,0 +1,180 @@
+[
+	{
+		"name": "dashboard",
+		"path": "dashboard",
+		"meta": {
+			"type": 1,
+			"title": "工作台",
+			"roles": [
+				"admin"
+			],
+			"requiresAuth": true,
+			"icon": "icon-apps",
+			"locale": "string",
+			"hideInMenu": false,
+			"hideChildrenInMenu": false,
+			"activeMenu": "string",
+			"order": 1,
+			"noAffix": false,
+			"ignoreCache": false
+		},
+		"children": [
+			{
+				"name": "Workplace",
+				"component": "dashboard/workplace/Workplace",
+				"path": "workplace",
+				"meta": {
+					"type": 2,
+					"title": "工作台",
+					"layout": "LayoutSide",
+					"roles": [
+						"admin"
+					],
+					"requiresAuth": true,
+					"icon": "icon-apps",
+					"locale": "string",
+					"hideInMenu": false,
+					"hideChildrenInMenu": false,
+					"activeMenu": "string",
+					"order": 1,
+					"noAffix": false,
+					"ignoreCache": false,
+					"residentTab": true
+				}
+			},
+			{
+				"name": "Monitor",
+				"component": "dashboard/monitor/Monitor",
+				"path": "monitor",
+				"meta": {
+					"type": 2,
+					"title": "数据可视化",
+					"layout": "LayoutSide",
+					"roles": [
+						"admin"
+					],
+					"requiresAuth": true,
+					"icon": "icon-apps",
+					"locale": "string",
+					"hideInMenu": false,
+					"hideChildrenInMenu": false,
+					"activeMenu": "string",
+					"order": 1,
+					"noAffix": false,
+					"ignoreCache": true
+				}
+			}
+		]
+	},
+	{
+		"name": "article",
+		"path": "article",
+		"meta": {
+			"type": 1,
+			"title": "文章资讯",
+			"roles": [
+				"admin"
+			],
+			"requiresAuth": true,
+			"icon": "icon-apps",
+			"locale": "string",
+			"hideInMenu": false,
+			"hideChildrenInMenu": false,
+			"activeMenu": "string",
+			"order": 1,
+			"noAffix": false,
+			"ignoreCache": false
+		},
+		"children": [
+			{
+				"name": "ListsIndex",
+				"component": "article/lists/ListsIndex",
+				"path": "list",
+				"meta": {
+					"type": 2,
+					"title": "文章资讯",
+					"layout": "LayoutSide",
+					"roles": [
+						"admin"
+					],
+					"requiresAuth": true,
+					"icon": "icon-apps",
+					"locale": "string",
+					"hideInMenu": false,
+					"hideChildrenInMenu": false,
+					"activeMenu": "string",
+					"order": 1,
+					"noAffix": false,
+					"ignoreCache": false,
+					"residentTab": true
+				}
+			},
+			{
+				"name": "ListsEdit",
+				"component": "article/lists/ListsEdit",
+				"path": "edit",
+				"meta": {
+					"type": 2,
+					"title": "文章编辑",
+					"layout": "LayoutSide",
+					"roles": [
+						"admin"
+					],
+					"requiresAuth": true,
+					"icon": "icon-apps",
+					"locale": "string",
+					"hideInMenu": false,
+					"hideChildrenInMenu": false,
+					"activeMenu": "string",
+					"order": 1,
+					"noAffix": false,
+					"ignoreCache": false
+				}
+			}
+		]
+	},
+	{
+		"name": "catelog",
+		"path": "catelog",
+		"meta": {
+			"type": 1,
+			"title": "菜单管理",
+			"roles": [
+				"admin"
+			],
+			"requiresAuth": true,
+			"icon": "icon-apps",
+			"locale": "string",
+			"hideInMenu": false,
+			"hideChildrenInMenu": false,
+			"activeMenu": "string",
+			"order": 1,
+			"noAffix": false,
+			"ignoreCache": false
+		},
+		"children": [
+			{
+				"name": "devtool",
+				"component": "devtool/devtool",
+				"path": "list",
+				"meta": {
+					"type": 2,
+					"title": "菜单编辑",
+					"layout": "LayoutSide",
+					"roles": [
+						"admin"
+					],
+					"requiresAuth": true,
+					"icon": "icon-apps",
+					"locale": "string",
+					"hideInMenu": false,
+					"hideChildrenInMenu": false,
+					"activeMenu": "string",
+					"order": 1,
+					"noAffix": false,
+					"ignoreCache": false
+				}
+			}
+		]
+	}
+]

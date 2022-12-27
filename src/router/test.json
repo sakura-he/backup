@@ -1,0 +1,22 @@
+{
+	"name":"ListsIndex",
+	"component": "article/lists/ListsIndex",
+	"type": 1,
+	"path": "/article",
+	"meta": {
+		"title": "文章资讯",
+		"layout": "SilderLayout",
+		"roles": [
+			"admin"
+		],
+		"requiresAuth": true,
+		"icon": "icon-apps",
+		"locale": "string",
+		"hideInMenu": false,
+		"hideChildrenInMenu": false,
+		"activeMenu": "string",
+		"order": 1,
+		"noAffix": false,
+		"ignoreCache": false
+	}
+}
