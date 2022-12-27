@@ -21,7 +21,7 @@
                             <icon-pushpin
                                 v-if="tab?.meta.residentTab"
                             />
-                            <DynamicIconVue
+                            <DynamicIcon
                                 v-else
                                 :icon="tab?.meta.icon"
                             />

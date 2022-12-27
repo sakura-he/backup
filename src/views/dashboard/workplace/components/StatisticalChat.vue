@@ -1,15 +1,20 @@
 <!-- 工作区里面员工数据组件 -->
 <template>
     <div class="container tw-w-full">
-        <div class="chart tw-w-full tw-h-96" ref="chart"></div>
+        <VChart
+            class="chart tw-w-full tw-h-96"
+            :ref="updateChartRef"
+            :option="option"
+            v-if="renderChart"
+        ></VChart>
     </div>
 </template>
 
 <script setup lang="ts">
+    import useResizeObserver from "@/utils/resizeObserver";
+    import { useDebounce } from "@/utils/useDebounce";
     import dayjs from "dayjs";
     import customParseFormat from "dayjs/plugin/customParseFormat";
-
-    import useResizeObserver from "@/utils/resizeObserver";
     // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
     import * as echarts from "echarts/core";
     // 引入柱状图图表，图表后缀都为 Chartz
@@ -17,29 +22,29 @@
     // 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
     import {
         DatasetComponent,
-        GridComponent,
         LegendComponent,
         TitleComponent,
         TooltipComponent,
         TransformComponent,
     } from "echarts/components";
     // 标签自动布局，全局过渡动画等特性
-    import { LabelLayout, UniversalTransition } from "echarts/features";
+    import {
+        LabelLayout,
+        UniversalTransition,
+    } from "echarts/features";
     // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
     import { CanvasRenderer } from "echarts/renderers";
-
+    import { VNodeRef } from "vue";
+    import VChart from "vue-echarts";
     dayjs.extend(customParseFormat);
-    let myChart: echarts.ECharts;
 
-    const chart = ref<null | HTMLDivElement>(null);
     // 注册必须的组件
     echarts.use([
         TitleComponent,
         TooltipComponent,
-        GridComponent,
+        
         DatasetComponent,
         TransformComponent,
-
         LabelLayout,
         UniversalTransition,
         CanvasRenderer,
@@ -47,7 +52,7 @@
         LegendComponent,
     ]);
 
-    let option = {
+    let option = reactive({
         title: {
             top: 0,
             left: 0,
@@ -184,18 +189,34 @@
                 ],
             },
         ],
+    });
+    let chart = ref<InstanceType<typeof VChart>>();
+    let stopResizeObserver: () => void;
+    let { delay, execDebounce } = useDebounce();
+    delay.value = 150;
+    type ChartRefType = InstanceType<typeof VChart>;
+
+    let updateChartRef: VNodeRef = (ref) => {
+        if (ref) {
+            chart.value = ref as ChartRefType;
+            stopResizeObserver = useResizeObserver({
+                el: (ref as ChartRefType).$el,
+                observer: () => {
+                    execDebounce({
+                        callback: () => {
+                            (ref as ChartRefType).resize();
+                        },
+                    });
+                },
+            }).stopObserver;
+        }
     };
-
-    onMounted(() => {
-        myChart = echarts.init(chart.value!);
-        myChart.setOption(option);
-
-        useResizeObserver({
-            el: chart.value!,
-            observer: (entries) => {
-                myChart.resize();
-            },
-        });
+    let renderChart = ref(false);
+    nextTick(() => {
+        renderChart.value = true;
+    });
+    onUnmounted(() => {
+        stopResizeObserver();
     });
 </script>
 

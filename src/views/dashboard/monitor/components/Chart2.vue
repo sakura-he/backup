@@ -1,18 +1,19 @@
 <template>
+    
     <v-chart
+        v-if="renderChart"
         class="chart"
         :option="option"
-        ref="chart"
+        :ref="updateChartRef"
         :autoresize="false"
     />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+    import useResizeObserver from "@/utils/resizeObserver";
+    import { useDebounce } from "@/utils/useDebounce";
     import type { EChartsOption } from "echarts";
     import { MapChart } from "echarts/charts";
-    import ChinaMapJSON from "../ChinaMap.json";
-    import { useDebounce } from "@/utils/useDebounce";
-
     import {
         DatasetComponent,
         GeoComponent,
@@ -20,13 +21,38 @@
         TooltipComponent,
         VisualMapComponent,
     } from "echarts/components";
-    import { use, registerMap } from "echarts/core";
+    import { registerMap, use } from "echarts/core";
     import { CanvasRenderer } from "echarts/renderers";
-    import { provide } from "vue";
+    import { provide, VNodeRef } from "vue";
     import VChart, { THEME_KEY } from "vue-echarts";
-    import useResizeObserver from "@/utils/resizeObserver";
+    import ChinaMapJSON from "../ChinaMap.json";
+
     let { delay, execDebounce } = useDebounce();
-    delay.value = 50;
+    delay.value = 150;
+    // 等组件挂载到dom上在渲染,延迟一下优化卡顿
+    let renderChart = ref(false);
+    let chart = ref<InstanceType<typeof VChart>>();
+    nextTick(() => {
+        renderChart.value = true;
+    });
+    let stopResizeObserver: () => void;
+    type ChartRefType = InstanceType<typeof VChart>;
+    let updateChartRef: VNodeRef = (ref) => {
+        if (ref) {
+            chart.value = ref as ChartRefType;
+            stopResizeObserver = useResizeObserver({
+                el: (ref as ChartRefType).$el,
+                observer: () => {
+                    execDebounce({
+                        callback: () => {
+                            chart.value?.resize();
+                        },
+                    });
+                },
+            }).stopObserver;
+        }
+    };
+
     use([
         TitleComponent,
         DatasetComponent,
@@ -36,19 +62,11 @@
         MapChart,
         CanvasRenderer,
     ]);
-    let chart = ref<InstanceType<typeof VChart>>();
-    onMounted(() => {
-        useResizeObserver({
-            el: chart.value?.$el,
-            observer: (entries) => {
-                execDebounce({
-                    callback: () => {
-                       
-                        chart.value?.resize();
-                    },
-                });
-            },
-        });
+    onUnmounted(() => {
+        console.log(chart);
+        // 注意 当组件卸载后,为元素绑定的resizeobserver仍然会执行,需要手动卸载
+        // https://vuejs.org/guide/essentials/lifecycle.html
+        stopResizeObserver();
     });
     provide(THEME_KEY, "");
     registerMap("ChinaMap", ChinaMapJSON as any);

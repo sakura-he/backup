@@ -41,7 +41,7 @@ setupMock({
         });
         // 模拟异步路由列表数据
         mock(new RegExp("/api/user/menu"), () => {
-            return successResponseWrap(preset);
+            // return successResponseWrap(preset);
         });
     },
 });

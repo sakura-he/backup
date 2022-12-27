@@ -1,5 +1,10 @@
 <template>
-    <v-chart class="chart" :option="option" ref="chart" />
+    <v-chart
+        class="chart"
+        :option="option"
+        :ref="updateChartRef"
+        v-if="renderChart"
+    />
 </template>
 
 <script setup lang="ts">
@@ -9,6 +14,10 @@
     import type { EChartsOption } from "echarts";
     import { BarChart } from "echarts/charts";
     import {
+        LabelLayout,
+        UniversalTransition,
+    } from "echarts/features";
+    import {
         TitleComponent,
         TooltipComponent,
         LegendComponent,
@@ -16,10 +25,14 @@
         DatasetComponent,
     } from "echarts/components";
     import VChart, { THEME_KEY } from "vue-echarts";
-    import { ref, provide } from "vue";
+    import { ref, provide, VNodeRef } from "vue";
     import useResizeObserver from "@/utils/resizeObserver";
+    let renderChart = ref(false);
+    nextTick(() => {
+        renderChart.value = true;
+    });
     let { delay, execDebounce } = useDebounce();
-    delay.value = 50;
+    delay.value = 150;
     use([
         DatasetComponent,
         CanvasRenderer,
@@ -28,22 +41,30 @@
         TitleComponent,
         TooltipComponent,
         LegendComponent,
+        LabelLayout,
+        UniversalTransition,
     ]);
     let chart = ref<InstanceType<typeof VChart>>();
     provide(THEME_KEY, "");
-    onMounted(() => {
-        useResizeObserver({
-            el: chart.value?.$el,
-            observer: (entries) => {
-                execDebounce({
-                    callback: () => {
-                    
-                        chart.value?.resize();
-                    },
-                });
-            },
-        });
-    });
+
+
+    type ChartRefType = InstanceType<typeof VChart>;
+    let stopResizeObserver: () => void;
+    let updateChartRef: VNodeRef = (ref) => {
+        if (ref) {
+            chart.value = ref as ChartRefType;
+            stopResizeObserver = useResizeObserver({
+                el: (ref as ChartRefType).$el,
+                observer: () => {
+                    execDebounce({
+                        callback: () => {
+                            (ref as ChartRefType).resize();
+                        },
+                    });
+                },
+            }).stopObserver;
+        }
+    };
     const option: EChartsOption = reactive({
         title: {
             text: "销售额",
@@ -84,6 +105,9 @@
                 },
             },
         ],
+    });
+    onUnmounted(() => {
+        stopResizeObserver();
     });
 </script>
 

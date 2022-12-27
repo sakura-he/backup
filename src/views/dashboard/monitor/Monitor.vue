@@ -29,8 +29,9 @@
                             animation
                         >
                             <template #suffix>
-								<icon-caret-up style="color: green"/>
-                              
+                                <icon-caret-up
+                                    style="color: green"
+                                />
                             </template>
                         </a-statistic>
                     </div>
@@ -135,7 +136,7 @@
                 <div
                     class="tw-flex-1 !tw-rounded-[4px] tw-mb-2 tw-h-[300px]"
                 >
-                    <Chart2 />
+                   
                 </div>
             </a-card>
         </div>
@@ -151,15 +152,17 @@
         {
             title: "销售团队",
             dataIndex: "name",
+           
         },
         {
             title: "销售金额",
             dataIndex: "salary",
+           
         },
         {
             title: "备注",
             dataIndex: "address",
-            width: "auto",
+           
         },
     ];
 

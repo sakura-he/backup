@@ -1,19 +1,31 @@
 <!-- 工作区里面员工数据组件 -->
 <template>
     <div class="container tw-w-full tw-h-40 tw-relative">
-        <div class="chart tw-w-full tw-h-40 tw-relative" ref="chart"></div>
+        <VChart
+            class="chart tw-w-full tw-h-40 tw-relative"
+            :option="option"
+            :ref="updateChartRef"
+            v-if="renderChart"
+            @mousemove="onChartMousemove"
+        ></VChart>
     </div>
 </template>
 
 <script setup lang="ts">
+    import useResizeObserver from "@/utils/resizeObserver";
+	import { useDebounce } from "@/utils/useDebounce";
+
     import dayjs from "dayjs";
     import customParseFormat from "dayjs/plugin/customParseFormat";
-
-    import useResizeObserver from "@/utils/resizeObserver";
+    import VChart from "vue-echarts";
     // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
-    import * as echarts from "echarts/core";
+    import { use } from "echarts/core";
     // 引入柱状图图表，图表后缀都为 Chartz
-    import { BarChart, LineChart, PieChart } from "echarts/charts";
+    import {
+        BarChart,
+        LineChart,
+        PieChart,
+    } from "echarts/charts";
     // 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
     import {
         DatasetComponent,
@@ -24,20 +36,22 @@
         TransformComponent,
     } from "echarts/components";
     // 标签自动布局，全局过渡动画等特性
-    import { LabelLayout, UniversalTransition } from "echarts/features";
+
     // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
     import { CanvasRenderer } from "echarts/renderers";
-    import { useDebounce } from "@/utils/useDebounce";
+    import { VNodeRef } from "vue";
+    type ChartRefType = InstanceType<typeof VChart>;
     dayjs.extend(customParseFormat);
-    let myChart: echarts.ECharts;
+
     let props = defineProps<{
         data: { [props: string]: any };
     }>();
+    let renderChart = ref(false);
+
     let { delay, execDebounce } = useDebounce();
-    delay.value = 50;
-    const chart = ref<null | HTMLDivElement>(null);
+    delay.value = 150;
     // 注册必须的组件
-    echarts.use([
+    use([
         PieChart,
         TitleComponent,
         TooltipComponent,
@@ -45,15 +59,32 @@
         DatasetComponent,
         TransformComponent,
         BarChart,
-        LabelLayout,
-        UniversalTransition,
+
         CanvasRenderer,
         LineChart,
         LegendComponent,
     ]);
-
+    nextTick(() => {
+        renderChart.value = true;
+    });
+    let chart = ref<InstanceType<typeof VChart>>();
+    let stopResizeObserver: () => void;
+    let updateChartRef: VNodeRef = (ref) => {
+        if (ref) {
+            chart.value = ref as ChartRefType;
+            stopResizeObserver = useResizeObserver({
+                el: (ref as ChartRefType).$el,
+                observer: () => {
+                    execDebounce({
+                        callback: () => {
+                            (ref as ChartRefType).resize();
+                        },
+                    });
+                },
+            }).stopObserver;
+        }
+    };
     let sourceData = computed<any>(() => {
-        console.log("改变了", props.data);
         let sourceData = props.data.map((item: any) => {
             return [
                 item.date,
@@ -72,26 +103,7 @@
         ]);
         return sourceData;
     });
-    let defaultOptions = {
-        series: [
-            {
-                emphasis: {
-                    focus: "self",
-                },
-            },
-            {
-                emphasis: {
-                    focus: "self",
-                },
-            },
-            {
-                emphasis: {
-                    focus: "self",
-                },
-            },
-        ],
-    };
-    let options = {
+    let option = reactive({
         legend: {
             right: "5%",
             width: "50%",
@@ -178,60 +190,51 @@
                 },
             },
         ],
-    };
+    });
+
     let updateMemberDateTimer: number;
     let oldFocusIndex = -1; // 折线图类目轴指定索引的系列设置高index值,在前面
-    onMounted(() => {
-        myChart = echarts.init(chart.value!);
-        myChart.setOption(options);
-        updateMemberDateTimer = setInterval(() => {
-            let source = options.dataset.source;
-            source = source.map((item: any, index: number) => {
-                if (item.index !== 0) {
-                    let date = dayjs(item[0], "MM-DD");
-                    date = date.add(1, "day");
-                    item[0] = date.format("MM-DD");
-                    item[1] = item[1] + 1;
-                    item[2] = item[2] + 1;
-                    item[3] = item[3] + 1;
-                }
-                return item;
-            });
-            options.dataset.source = options.dataset.source;
-            myChart.setOption(options);
-        }, 5000) as unknown as number;
-        myChart.on("mouseover", (evt: any) => {
-            let newSeries = myChart.getOption().series as any;
-            console.log(newSeries);
-            newSeries.forEach((item: any, index: number) => {
-                item.zlevel && (item.zlevel = 0);
-                item.label && (item.label = { ...item.label, show: false });
-                if (index === evt.seriesIndex) {
-                    item.zlevel = 99;
-                    if (!item.label) {
-                        item.label = { show: true } as any;
-                    } else {
-                        item.label.show = true;
-                    }
-                }
-            });
-            myChart.setOption({
-                series: newSeries,
-            });
+
+    updateMemberDateTimer = setInterval(() => {
+        let source = option.dataset.source;
+        source = source.map((item: any, index: number) => {
+            if (item.index !== 0) {
+                let date = dayjs(item[0], "MM-DD");
+                date = date.add(1, "day");
+                item[0] = date.format("MM-DD");
+                item[1] = item[1] + 1;
+                item[2] = item[2] + 1;
+                item[3] = item[3] + 1;
+            }
+            return item;
         });
-        useResizeObserver({
-            el: chart.value!,
-            observer: (entries) => {
-                execDebounce({
-                    callback: () => {
-                        myChart.resize();
-                    },
+        option.dataset.source = source;
+    }, 5000) as unknown as number;
+
+    let onChartMousemove = (evt: any) => {
+        let newSeries = option.series;
+        newSeries.forEach((item: any, index: number) => {
+            item.zlevel && (item.zlevel = 0);
+            item.label &&
+                (item.label = {
+                    ...item.label,
+                    show: false,
                 });
-            },
+            if (index === evt.seriesIndex) {
+                item.zlevel = 99;
+                if (!item.label) {
+                    item.label = {
+                        show: true,
+                    } as any;
+                } else {
+                    item.label.show = true;
+                }
+            }
         });
-    });
+    };
     onUnmounted(() => {
         clearInterval(updateMemberDateTimer);
+        stopResizeObserver();
     });
 </script>
 
