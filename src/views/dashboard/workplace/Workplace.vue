@@ -1,39 +1,72 @@
 <template>
     <div class="page tw-break-all">
         <div class="tw-mb-2 tw-break-words">
-            <a-card :bordered="false" hoverable class="!tw-rounded-[4px]">
+            <a-card
+                :bordered="false"
+                hoverable
+                class="!tw-rounded-[4px]"
+            >
                 <div class="tw-flex tw-items-center">
-                    <a-avatar :size="60" class="tw-mr-3">Admin</a-avatar>
+                    <a-avatar :size="60" class="tw-mr-3"
+                        >Admin</a-avatar
+                    >
                     <div>
-                        <p class="tw-text-title-2 tw-mb-1">欢迎回来:Admin</p>
-                        <p class="tw-text-body-3">祝你开心每一天</p>
+                        <p class="tw-text-title-2 tw-mb-1"
+                            >欢迎回来:Admin</p
+                        >
+                        <p class="tw-text-body-3"
+                            >祝你开心每一天</p
+                        >
                     </div>
-                    <div class="tw-flex tw-ml-auto tw-h-full">
+                    <div
+                        class="tw-flex tw-ml-auto tw-h-full"
+                    >
                         <div
                             class="tw-mx-2 tw-h-full tw-self-start tw-flex tw-flex-col tw-items-end tw-justify-between"
                         >
-                            <span class="tw-text-body-1 tw-mb-1"> 进行中 </span>
+                            <span
+                                class="tw-text-body-1 tw-mb-1"
+                            >
+                                进行中
+                            </span>
                             <span class="tw-text-title-2"
-                                >{{ userData.user?.work?.underway || null }} /
-                                88</span
+                                >{{
+                                    userData.user?.work
+                                        ?.underway || null
+                                }}
+                                / 88</span
                             >
                         </div>
                         <div
                             class="tw-mx-2 tw-h-full tw-self-start tw-flex tw-flex-col tw-items-end tw-justify-between"
                         >
-                            <span class="tw-text-body-1 tw-mb-1"> 已完成 </span>
+                            <span
+                                class="tw-text-body-1 tw-mb-1"
+                            >
+                                已完成
+                            </span>
                             <span class="tw-text-title-2"
-                                >{{ userData.user?.work?.done || null }} /
-                                88</span
+                                >{{
+                                    userData.user?.work
+                                        ?.done || null
+                                }}
+                                / 88</span
                             >
                         </div>
                         <div
                             class="tw-mx-2 tw-h-full tw-self-start tw-flex tw-flex-col tw-items-end tw-justify-between"
                         >
-                            <span class="tw-text-body-1 tw-mb-1"> 未完成 </span>
+                            <span
+                                class="tw-text-body-1 tw-mb-1"
+                            >
+                                未完成
+                            </span>
                             <span class="tw-text-title-2"
-                                >{{ userData.user?.work?.undone || null }} /
-                                88</span
+                                >{{
+                                    userData.user?.work
+                                        ?.undone || null
+                                }}
+                                / 88</span
                             >
                         </div>
                     </div>
@@ -41,7 +74,9 @@
             </a-card>
         </div>
         <div class="overview -tw-mx-1 lg:tw-flex">
-            <div class="ow__content tw-mx-1 tw-flex-auto tw-min-w-0 tw-mb-2">
+            <div
+                class="ow__content tw-mx-1 tw-flex-auto tw-min-w-0 tw-mb-2"
+            >
                 <a-card
                     class="!tw-rounded-[4px] tw-overflow-hidden tw-mb-2"
                     :bordered="false"
@@ -51,17 +86,24 @@
                         <div> 成员数据 </div>
                     </template>
                     <template #extra>
-                        <a-pagination :total="50" size="mini" simple />
+                        <a-pagination
+                            :total="50"
+                            size="mini"
+                            simple
+                        />
                     </template>
                     <a-card-grid
-                        v-for="(member, memberIndex) in membersData.members ??
-                        []"
+                        v-for="(
+                            member, memberIndex
+                        ) in membersData.members ?? []"
                         :key="memberIndex"
                         :hoverable="true"
                         style="width: 25%"
                     >
                         <a-card
-                            :header-style="{ border: 'none' }"
+                            :header-style="{
+                                border: 'none',
+                            }"
                             :body-style="{ paddingTop: 0 }"
                             class="card-demo"
                             :bordered="false"
@@ -70,27 +112,46 @@
                                 <span
                                     class="tw-text-c-1 tw-transition-transform"
                                     :class="
-                                        currentMemberChatSwitches?.[memberIndex]
+                                        currentMemberChatSwitches?.[
+                                            memberIndex
+                                        ]
                                             ? 'tw-skew-x-3 tw-text-p-6'
                                             : ''
                                     "
-                                    v-if="currentMemberChatSwitches"
-                                    @click="switchMemberChart(memberIndex)"
+                                    v-if="
+                                        currentMemberChatSwitches
+                                    "
+                                    @click="
+                                        switchMemberChart(
+                                            memberIndex
+                                        )
+                                    "
                                 >
                                     <icon-swap />
                                 </span>
                             </template>
                             <template #title>
-                                <div class="tw-flex tw-items-center">
-                                    <a-avatar :size="30" class="tw-mr-2"
+                                <div
+                                    class="tw-flex tw-items-center"
+                                >
+                                    <a-avatar
+                                        :size="30"
+                                        class="tw-mr-2"
                                         >user{{
-                                            (currentMemberPage - 1) * 8 +
-                                            (memberIndex + 1)
+                                            (currentMemberPage -
+                                                1) *
+                                                8 +
+                                            (memberIndex +
+                                                1)
                                         }}</a-avatar
                                     >
-                                    <div class="tw-text-body-3">
+                                    <div
+                                        class="tw-text-body-3"
+                                    >
                                         user{{
-                                            (currentMemberPage - 1) * 8 +
+                                            (currentMemberPage -
+                                                1) *
+                                                8 +
                                             memberIndex +
                                             1
                                         }}</div
@@ -106,17 +167,35 @@
                                         ]
                                     "
                                 >
-                                    <p>已完成: {{ member.today_work.done }}</p>
+                                    <p
+                                        >已完成:
+                                        {{
+                                            member
+                                                .today_work
+                                                .done
+                                        }}</p
+                                    >
                                     <p
                                         >未完成:
-                                        {{ member.today_work.undone }}</p
+                                        {{
+                                            member
+                                                .today_work
+                                                .undone
+                                        }}</p
                                     >
                                     <p
                                         >进行中:
-                                        {{ member.today_work.underway }}</p
+                                        {{
+                                            member
+                                                .today_work
+                                                .underway
+                                        }}</p
                                     >
                                 </div>
-                                <MemberChats :data="member.work" v-else />
+                                <MemberChats
+                                    :data="member.work"
+                                    v-else
+                                />
                             </div>
                         </a-card>
                     </a-card-grid>
@@ -134,22 +213,32 @@
                             content="Comment body content."
                             datetime="1 hour"
                             v-for="item in 8"
-                            class="tw-border-b-[1px] tw-pb-2 tw-border-[#f0f0f0] tw-border-solid"
+                           
                         >
+						 <!-- class="tw-border-b-[1px] tw-pb-2 tw-border-cb-1 tw-border-solid" -->
                             <template #actions>
-                                <span class="action" key="heart">
+                                <span
+                                    class="action"
+                                    key="heart"
+                                >
                                     <span>
                                         <IconHeart />
                                     </span>
                                     11
                                 </span>
-                                <span class="action" key="star">
+                                <span
+                                    class="action"
+                                    key="star"
+                                >
                                     <span>
                                         <IconStar />
                                     </span>
                                     11
                                 </span>
-                                <span class="action" key="reply">
+                                <span
+                                    class="action"
+                                    key="reply"
+                                >
                                     <IconMessage /> Reply
                                 </span>
                             </template>
@@ -184,10 +273,15 @@
                             class="tw-mt-3 tw-text-center tw-rounded-sm tw-transi hover:tw-shadow-sm tw-cursor-pointer"
                             v-for="item in 8"
                         >
-                            <p class="tw-py-2 tw-text-title-1">
+                            <p
+                                class="tw-py-2 tw-text-title-1"
+                            >
                                 <icon-plus
                             /></p>
-                            <p class="tw-pb-2 tw-text-body-2">快捷路径</p>
+                            <p
+                                class="tw-pb-2 tw-text-body-2"
+                                >快捷路径</p
+                            >
                         </div>
                     </div>
                 </a-card>
@@ -196,16 +290,25 @@
                     :bordered="false"
                     :body-style="{ padding: 0 }"
                 >
-                    <a-carousel class="tw-w-full tw-h-40" :default-current="2">
+                    <a-carousel
+                        class="tw-w-full tw-h-40"
+                        :default-current="2"
+                    >
                         <a-carousel-item
                             v-for="image in images"
                             class="tw-w-full"
                         >
-                            <img :src="image" class="tw-w-full tw-h-40" />
+                            <img
+                                :src="image"
+                                class="tw-w-full tw-h-40"
+                            />
                         </a-carousel-item>
                     </a-carousel>
                 </a-card>
-                <a-card class="tw-mb-2 !tw-rounded-[4px]" :bordered="false">
+                <a-card
+                    class="tw-mb-2 !tw-rounded-[4px]"
+                    :bordered="false"
+                >
                     <template #title>
                         <span>公告</span>
                     </template>
@@ -221,15 +324,21 @@
                                 size="small"
                                 >公告</a-tag
                             >
-                            <div class="tw-flex-1 tw-min-w-0 tw-ml-2">
-                                <div class="tw-w-full tw-truncate"
+                            <div
+                                class="tw-flex-1 tw-min-w-0 tw-ml-2"
+                            >
+                                <div
+                                    class="tw-w-full tw-truncate"
                                     >这是通知内容这是通知内容这是通知内容这是通知内容这是通知内容这是通知内容</div
                                 >
                             </div>
                         </li>
                     </ul>
                 </a-card>
-                <a-card class="tw-mb-2 !tw-rounded-[4px]" :bordered="false">
+                <a-card
+                    class="tw-mb-2 !tw-rounded-[4px]"
+                    :bordered="false"
+                >
                     <template #title>
                         <span>统计</span>
                     </template>
@@ -243,7 +352,10 @@
 </template>
 
 <script setup lang="ts">
-    import { getWorkplaceIndex, getWorkplaceMember } from "@/api/workplace";
+    import {
+        getWorkplaceIndex,
+        getWorkplaceMember,
+    } from "@/api/workplace";
     import MemberChats from "./components/MemberChats.vue";
     import StaticsticalChart from "./components/StatisticalChat.vue";
     const colors = [
@@ -274,27 +386,44 @@
             userData[key] = res.data[key];
         });
     });
-    let memberChartSwitches = reactive<Map<number, boolean[]>>(new Map());
+    let memberChartSwitches = reactive<
+        Map<number, boolean[]>
+    >(new Map());
     let currentMemberChatSwitches = computed(() => {
         let currentPageMemberCount = membersData.page_num;
-        if (!memberChartSwitches.get(currentMemberPage.value)) {
+        if (
+            !memberChartSwitches.get(
+                currentMemberPage.value
+            )
+        ) {
             memberChartSwitches.set(
                 currentMemberPage.value,
-                new Array(currentPageMemberCount).fill(false)
+                new Array(currentPageMemberCount).fill(
+                    false
+                )
             );
         }
-        return memberChartSwitches.get(currentMemberPage.value);
+        return memberChartSwitches.get(
+            currentMemberPage.value
+        );
     });
-    getWorkplaceMember(currentMemberPage.value).then((res) => {
-        let data = res.data;
-        Object.keys(data).forEach((key) => {
-            membersData[key] = data[key];
-        });
-    });
+    getWorkplaceMember(currentMemberPage.value).then(
+        (res) => {
+            let data = res.data;
+            Object.keys(data).forEach((key) => {
+                membersData[key] = data[key];
+            });
+        }
+    );
     function switchMemberChart(memberIndex: number) {
-        if (memberChartSwitches.get(currentMemberPage.value)) {
-            memberChartSwitches.get(currentMemberPage.value)![memberIndex] =
-                !memberChartSwitches.get(currentMemberPage.value)![memberIndex];
+        if (
+            memberChartSwitches.get(currentMemberPage.value)
+        ) {
+            memberChartSwitches.get(
+                currentMemberPage.value
+            )![memberIndex] = !memberChartSwitches.get(
+                currentMemberPage.value
+            )![memberIndex];
         }
     }
 </script>

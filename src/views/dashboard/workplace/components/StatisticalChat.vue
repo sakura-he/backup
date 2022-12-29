@@ -42,7 +42,7 @@
     echarts.use([
         TitleComponent,
         TooltipComponent,
-        
+
         DatasetComponent,
         TransformComponent,
         LabelLayout,
@@ -195,8 +195,9 @@
     let { delay, execDebounce } = useDebounce();
     delay.value = 150;
     type ChartRefType = InstanceType<typeof VChart>;
-
+    let isChartResize = false;
     let updateChartRef: VNodeRef = (ref) => {
+        isChartResize = false;
         if (ref) {
             chart.value = ref as ChartRefType;
             stopResizeObserver = useResizeObserver({
@@ -204,7 +205,11 @@
                 observer: () => {
                     execDebounce({
                         callback: () => {
-                            (ref as ChartRefType).resize();
+                            isChartResize &&
+                                (
+                                    ref as ChartRefType
+                                ).resize();
+                            isChartResize = true;
                         },
                     });
                 },

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
     import useResizeObserver from "@/utils/resizeObserver";
-	import { useDebounce } from "@/utils/useDebounce";
+    import { useDebounce } from "@/utils/useDebounce";
 
     import dayjs from "dayjs";
     import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -67,9 +67,11 @@
     nextTick(() => {
         renderChart.value = true;
     });
+    let isChartResize = false;
     let chart = ref<InstanceType<typeof VChart>>();
     let stopResizeObserver: () => void;
     let updateChartRef: VNodeRef = (ref) => {
+        isChartResize = false;
         if (ref) {
             chart.value = ref as ChartRefType;
             stopResizeObserver = useResizeObserver({
@@ -77,7 +79,11 @@
                 observer: () => {
                     execDebounce({
                         callback: () => {
-                            (ref as ChartRefType).resize();
+                            isChartResize &&
+                                (
+                                    ref as ChartRefType
+                                ).resize();
+                            isChartResize = true;
                         },
                     });
                 },

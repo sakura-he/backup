@@ -1,3 +1,4 @@
+
 <template>
     <v-chart
         v-if="renderChart"
@@ -47,11 +48,10 @@
     nextTick(() => {
         renderChart.value = true;
     });
-    let isChartResize = false;
+    let a = chart2Type[props.type];
     let stopResizeObserver: () => void;
     type ChartRefType = InstanceType<typeof VChart>;
     let updateChartRef: VNodeRef = (ref) => {
-        isChartResize = false;
         if (ref) {
             chart.value = ref as ChartRefType;
             stopResizeObserver = useResizeObserver({
@@ -59,9 +59,7 @@
                 observer: () => {
                     execDebounce({
                         callback: () => {
-                            isChartResize &&
-                                chart.value?.resize();
-                            isChartResize = true;
+                            chart.value?.resize();
                         },
                     });
                 },
@@ -121,7 +119,7 @@
         },
         { name: "甘肃省", value: 45 },
         {
-            name: "测试1",
+            name: "Bavettede de flanchet",
             value: 85,
         },
         { name: "上海市", value: 35 },
@@ -145,7 +143,7 @@
             value: 55,
         },
         { name: "宁夏回族自治区", value: 45 },
-        { name: "测试2", value: 85 },
+        { name: "Collier", value: 85 },
         {
             name: "内蒙古自治区",
             value: 15,
@@ -163,9 +161,7 @@
         { name: "贵州省", value: 95 },
     ];
     let mapOption = {
-        tooltip: {
-            className: "map-tooltip",
-        },
+        tooltip: {},
         visualMap: {
             left: "0",
             top: "10%",
@@ -195,7 +191,7 @@
                     },
                 },
                 selectedMode: false,
-                animationDurationUpdate: 300,
+				animationDurationUpdate: 1000,
                 universalTransition: true,
             },
         ],
@@ -205,23 +201,15 @@
             dimensions: ["name", "value"],
             source: data,
         },
-        xAxis: {
-            type: "category",
-            axisLabel: {
-                rotate: 70,
-            },
-        },
-        yAxis: {
-            type: "value",
-        },
+        xAxis: { type: "category" },
+        yAxis: { type: "value" },
         series: [
             {
                 name: "地区",
                 type: "bar",
-
                 emphasis: {
                     label: {
-                        show: true,
+                        show: false,
                     },
                 },
                 selectedMode: false,
@@ -240,13 +228,5 @@
     .chart {
         height: 100%;
         width: 100%;
-    }
-    :deep(.map-tooltip) {
-        border-radius: 4px !important;
-        border: none !important;
-        background-color: var(
-            --color-bg-opacity-2
-        ) !important;
-        backdrop-filter: blur(8px) !important;
     }
 </style>

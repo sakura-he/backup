@@ -4,6 +4,7 @@
         :option="option"
         :ref="updateChartRef"
         v-if="renderChart"
+        v-bind:update-options="{ lazyUpdate: false }"
     />
 </template>
 
@@ -42,15 +43,15 @@
         TooltipComponent,
         LegendComponent,
         LabelLayout,
-        UniversalTransition,
     ]);
     let chart = ref<InstanceType<typeof VChart>>();
     provide(THEME_KEY, "");
 
-
+    let isChartResize = false;
     type ChartRefType = InstanceType<typeof VChart>;
     let stopResizeObserver: () => void;
     let updateChartRef: VNodeRef = (ref) => {
+        isChartResize = false;
         if (ref) {
             chart.value = ref as ChartRefType;
             stopResizeObserver = useResizeObserver({
@@ -58,7 +59,10 @@
                 observer: () => {
                     execDebounce({
                         callback: () => {
-                            (ref as ChartRefType).resize();
+                            if (isChartResize){
+								(ref as ChartRefType).resize();
+							}
+							isChartResize = true; 
                         },
                     });
                 },
@@ -66,6 +70,7 @@
         }
     };
     const option: EChartsOption = reactive({
+        animationDurationUpdate: 1000,
         title: {
             text: "销售额",
             left: "center",
@@ -93,7 +98,7 @@
             {
                 type: "bar",
                 name: "sale",
-
+                smooth: true,
                 label: {
                     show: false,
                 },
@@ -103,6 +108,8 @@
                         show: true,
                     },
                 },
+                animationDurationUpdate: 1000,
+                universalTransition: true,
             },
         ],
     });
