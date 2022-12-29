@@ -53,6 +53,9 @@
     ]);
 
     let option = reactive({
+		tooltip:{
+			className:"tooltip"
+		},
         title: {
             top: 0,
             left: 0,
@@ -225,4 +228,13 @@
     });
 </script>
 
-<style scoped></style>
+<style scoped>
+   :deep(.tooltip) {
+        border-radius: 4px !important;
+        border: none !important;
+        background-color: var(
+            --color-bg-opacity-2
+        ) !important;
+        backdrop-filter: blur(8px) !important;
+    }
+</style>

@@ -246,6 +246,6 @@
         background-color: var(
             --color-bg-opacity-2
         ) !important;
-        backdrop-filter: blur(8px) !important;
+        backdrop-filter: blur(4px) !important;
     }
 </style>

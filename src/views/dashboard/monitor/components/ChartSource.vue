@@ -98,7 +98,7 @@
             borderWidth: 0,
             trigger: "item",
             backgroundColor: "rgba(0,0,0,0)",
-            className: "chart_test",
+            className: "chart-source",
         },
         dataset: {
             source: [
@@ -176,13 +176,13 @@
         height: 100%;
         width: 100%;
     }
-    :deep(.chart_test) {
+    :deep(.chart-source) {
         font-weight: bold !important;
         text-align: center !important;
         box-shadow: none !important;
         width: 20%;
     }
-    :deep(.chart_test *) {
+    :deep(.chart-source *) {
         text-align: center !important;
     }
 </style>

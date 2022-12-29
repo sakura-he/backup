@@ -144,7 +144,8 @@
             ],
         },
         tooltip: {
-            trigger: "axis",
+			className:'tooltip',
+			confine:true
         },
         dataset: {
             source: sourceData.value,
@@ -244,4 +245,13 @@
     });
 </script>
 
-<style scoped></style>
+<style scoped>
+   :deep(.tooltip) {
+        border-radius: 4px !important;
+        border: none !important;
+        background-color: var(
+            --color-bg-opacity-2
+        ) !important;
+        backdrop-filter: blur(4px) !important;
+    }
+</style>
