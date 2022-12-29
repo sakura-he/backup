@@ -36,6 +36,7 @@ declare module '@vue/runtime-core' {
     AMenuItem: typeof import('@arco-design/web-vue')['MenuItem']
     APagination: typeof import('@arco-design/web-vue')['Pagination']
     APopover: typeof import('@arco-design/web-vue')['Popover']
+    AProgress: typeof import('@arco-design/web-vue')['Progress']
     ARadio: typeof import('@arco-design/web-vue')['Radio']
     ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
     AResult: typeof import('@arco-design/web-vue')['Result']

@@ -180,10 +180,11 @@
         font-weight: bold !important;
         text-align: center !important;
         box-shadow: none !important;
-        width: 20%;
+        width: 30%;
+		word-break:break-word !important;
+		white-space: normal  !important;
+		
     }
-    :deep(.chart-source *) {
-        text-align: center !important;
-    }
+    
 </style>
 <style></style>

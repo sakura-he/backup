@@ -13,7 +13,7 @@
     import { use } from "echarts/core";
     import { CanvasRenderer } from "echarts/renderers";
     import type { EChartsOption } from "echarts";
-    import { BarChart } from "echarts/charts";
+    import { LineChart } from "echarts/charts";
     import {
         LabelLayout,
         UniversalTransition,
@@ -38,11 +38,12 @@
         DatasetComponent,
         CanvasRenderer,
         GridComponent,
-        BarChart,
+        LineChart,
         TitleComponent,
         TooltipComponent,
         LegendComponent,
         LabelLayout,
+        UniversalTransition,
     ]);
     let chart = ref<InstanceType<typeof VChart>>();
     provide(THEME_KEY, "");
@@ -59,10 +60,12 @@
                 observer: () => {
                     execDebounce({
                         callback: () => {
-                            if (isChartResize){
-								(ref as ChartRefType).resize();
-							}
-							isChartResize = true; 
+                            if (isChartResize) {
+                                (
+                                    ref as ChartRefType
+                                ).resize();
+                            }
+                            isChartResize = true;
                         },
                     });
                 },
@@ -70,11 +73,27 @@
         }
     };
     const option: EChartsOption = reactive({
+        tooltip: {
+            axisPointer: {
+                type: "cross",
+                label: {
+                    backgroundColor: "rgba(22, 93, 255,1)",
+                },
+            },
+            className: "tooltip",
+        },
+        grid: {
+            left: "3%",
+            right: "5%",
+            bottom: "3%",
+            containLabel: true,
+        },
         title: {
             text: "销售额",
             left: "center",
         },
         xAxis: {
+            boundaryGap: false,
             type: "category",
         },
         yAxis: {
@@ -95,11 +114,34 @@
         },
         series: [
             {
-                type: "bar",
+                type: "line",
                 name: "sale",
-                smooth: true,
+
+                areaStyle: {
+                    color: {
+                        type: "linear",
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [
+                            {
+                                offset: 0,
+                                color: "rgba(22, 93, 255,.9)", // 0% 处的颜色
+                            },
+                            {
+                                offset: 1,
+                                color: "rgba(190, 218, 255,.4)", // 100% 处的颜色
+                            },
+                        ],
+                        global: false, // 缺省为 false
+                    },
+                },
                 label: {
-                    show: false,
+                    show: true,
+                },
+                lineStyle: {
+                    cap: "round",
                 },
                 emphasis: {
                     focus: "series",
@@ -119,5 +161,13 @@
     .chart {
         height: 100%;
         width: 100%;
+    }
+    :deep(.tooltip) {
+        border-radius: 4px !important;
+        border: none !important;
+        background-color: var(
+            --color-bg-opacity-2
+        ) !important;
+        backdrop-filter: blur(4px) !important;
     }
 </style>

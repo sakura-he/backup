@@ -1,53 +1,12 @@
 <template>
     <div class="page">
-        <div
-            class="header tw-grid tw-grid-cols-2 lg:tw-grid-cols-4 tw-grid-flow-row tw-gap-2 tw-mb-2"
-        >
-            <a-card
-                class="!tw-rounded-[4px]"
-                v-for="item in 4"
-                :bordered="false"
-            >
-                <template v-slot:title>
-                    <div class="tw-text-body-3"
-                        >销售分析</div
-                    >
-                </template>
-                <template #extra>
-                    <a-button type="text" size="mini"> 刷新 </a-button>
-                </template>
-                <div>
-                    <div
-                        class="header__value tw-text-title-4"
-                    >
-                        ￥
-                        <a-statistic
-                            :value="125670"
-                            show-group-separator
-                            :start="true"
-                            :animation-duration="1000"
-                            animation
-                        >
-                            <template #suffix>
-                                <icon-caret-up
-                                    style="color: green"
-                                />
-                            </template>
-                        </a-statistic>
-                    </div>
-                    <div
-                        class="header__chart tw-w-full tw-h-14"
-                    ></div>
-                    <div
-                        class="header__footer tw-text-body-2"
-                        >累计销售额:$1222670</div
-                    >
-                </div>
-            </a-card>
-        </div>
+        <!-- 销售统计 -->
+        <Statistic
+            class="header"
+        />
         <!-- 销售表格 -->
         <a-card
-            class="chart2 !tw-rounded-[4px] tw-mb-2"
+            class="chart2 custom-card  !tw-rounded-[4px] tw-mb-2"
             :bordered="false"
         >
             <template v-slot:title>
@@ -60,7 +19,12 @@
                     >
                         <template v-slot:extra>
                             <div class="tw-text-body-3">
-								<a-button type="text" size="mini"> 刷新 </a-button>
+                                <a-button
+                                    type="text"
+                                    size="mini"
+                                >
+                                    刷新
+                                </a-button>
                             </div>
                         </template>
                         <div class="tw-text-title-1">
@@ -123,7 +87,7 @@
                     <a-radio-group
                         v-model="chart2TypeValue"
                         :type="'button'"
-						:size="'mini'"
+                        :size="'mini'"
                     >
                         <a-radio :value="chart2Type['map']"
                             >地图</a-radio
@@ -177,14 +141,15 @@
     import Chart1 from "./components/Chart1.vue";
     import Chart2 from "./components/Chart2.vue";
     import ChartSource from "./components/ChartSource.vue";
+    import Statistic from "./components/TheStatistic.vue";
     enum chart2Type {
         map = 1,
         bar = 2,
     }
-	let showchart1 = ref(false);
-	setTimeout(() => {
-		showchart1.value = true
-	}, 1000);
+    let showchart1 = ref(false);
+    setTimeout(() => {
+        showchart1.value = true;
+    }, 1000);
     let chart2TypeValue = ref(chart2Type["map"]);
     const columns = [
         {
@@ -273,12 +238,12 @@
         box-sizing: border-box;
         padding-bottom: 12px;
     }
-    :deep(.arco-card-header) {
+    .custom-card > :deep(.arco-card-header) {
         height: max-content !important;
         padding-bottom: 0 !important;
         border: none !important;
     }
-    :deep(.arco-card-body) {
+    .custom-card > :deep(.arco-card-body) {
         padding-top: 10px !important;
         padding-bottom: 10px !important;
     }

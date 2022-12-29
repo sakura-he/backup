@@ -22,14 +22,14 @@ module.exports = {
 			//文字禁用
 			"p-2": 'rgb(var(--primary-2))',
 			//浅色/白底悬浮
-			"cp-1": 'rgb(var(--color-border-1))',
-			"cb-2": 'rgb(var(--color-border-2))',
-			"cb-3": 'rgb(var(--color-border-3))',
-			"cb-4": 'rgb(var(--color-border-4))',
-			"cf-1": 'rgb(var(--color-fill-1))',
-			"cf-2": 'rgb(var(--color-fill-2))',
-			"cf-3": 'rgb(var(--color-fill-3))',
-			"cf-4": 'rgb(var(--color-fill-4))',
+			"cp-1": 'var(--color-border-1)',
+			"cb-2": 'var(--color-border-2)',
+			"cb-3": 'var(--color-border-3)',
+			"cb-4": 'var(--color-border-4)',
+			"cf-1": 'var(--color-fill-1)',
+			"cf-2": 'var(--color-fill-2)',
+			"cf-3": 'var(--color-fill-3)',
+			"cf-4": 'var(--color-fill-4)',
 		},
 		textColor: {
 			'c-1': 'var(--color-text-1)',
