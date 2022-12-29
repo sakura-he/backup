@@ -70,7 +70,6 @@
         }
     };
     const option: EChartsOption = reactive({
-        animationDurationUpdate: 1000,
         title: {
             text: "销售额",
             left: "center",
@@ -108,8 +107,6 @@
                         show: true,
                     },
                 },
-                animationDurationUpdate: 1000,
-                universalTransition: true,
             },
         ],
     });

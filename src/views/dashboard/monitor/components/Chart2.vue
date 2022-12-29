@@ -82,7 +82,6 @@
         UniversalTransition,
     ]);
     onUnmounted(() => {
-        console.log(chart);
         // 注意 当组件卸载后,为元素绑定的resizeobserver仍然会执行,需要手动卸载
         // https://vuejs.org/guide/essentials/lifecycle.html
         stopResizeObserver();
